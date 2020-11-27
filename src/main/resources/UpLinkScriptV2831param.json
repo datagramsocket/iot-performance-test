@@ -1,0 +1,2 @@
+{ "data": { "value": "PM2.5=837,PM10=604,Temp=36.3,Noise=883,Humid=68.0", "timestamp": "2002-01-22T07:53:28.399Z" } }
+{"topicName":"data/123456789/environment"}

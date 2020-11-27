@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  name: tb-ce-performance-test
+  namespace: infinovaiot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tb-ce-performance-test
+  template:
+    metadata:
+      labels:
+        app: tb-ce-performance-test
+    spec:
+      containers:
+        - name: server
+          imagePullPolicy: IfNotPresent
+          image: infinovaiot/tb-ce-performance-test:latest
+          env:
+            - name: CASSANDRA_URL
+              value: "cassandra:9042"
+            - name: TB_KAFKA_SERVERS
+              value: "tb-kafka:9092"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://10.82.27.137:5432/infinovaiot"
+            - name: CASSANDRA_KEYSPACE_NAME
+              value: "infinovaiot"
+            - name: TEST_API
+              value: "device"
+            - name: DEVICE_API
+              value: "MQTT"
+            - name: MQTT_HOST
+              value: "10.82.27.140"
+            - name: MQTT_PORT
+              value: "1883"
+            - name: MQTT_PUBLISH_TOPIC
+              value: "infinovaiot/mqtt-performance-test"
+            - name: MQTT_QOS
+              value: "1"
+            - name: DEVICE_START_IDX
+              value: "0"
+            - name: DEVICE_END_IDX
+              value: "1"
+            - name: DEVICE_CREATE_ON_START
+              value: "false"
+            - name: DEVICE_DELETE_ON_COMPLETE
+              value: "false"
+            - name: TEST_PAYLOAD_TYPE
+              value: "CUSTOM"
+            - name: TEST_CUSTOM_PAYLOAD
+              value: "speed:int"
+            - name: MESSAGES_PER_SECOND
+              value: "1"
+            - name: DURATION_IN_SECONDS
+              value: "3600"
+            - name: SAMPLE_INTERVAL_IN_SECONDS
+              value: "5"
+            - name: CASSANDRA_QUERY_RATE_LIMIT_PRINT_MS
+              value: "1000"
+            - name: TB_SERVICE_ID
+              value: ""
+            - name: REST_URL
+              value: "http://tb-node-core:8080"
+            - name: REST_USERNAME
+              value: "tenant@infinovaiot.com"
+            - name: REST_PASSWORD
+              value: "tenant"
+      restartPolicy: Always
+
